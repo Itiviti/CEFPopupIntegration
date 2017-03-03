@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MessageChannel demo - Main Window</title>
+</head>
+<body>
+
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+<script src="windowManager.js"></script>
+<script type="text/javascript">
+    if (window.opener) {
+        $('body').append('This is a secondary window!');
+    }
+    else {
+        $('body').append('' +
+                         '<a id="new-window" href=".">New Window</a>' +
+                         '<br>' +
+                         '<div>' +
+                         '    <h4>Currently open windows</h4>' +
+                         '    <ul id="open-window-list"></ul>' +
+                         '</div>' +
+                         '<br><a id="close-all-windows" href=".">Close All Windows</a>'
+        );
+    }
+    var windowManager = createWindowManager();
+    $('#new-window').on('click', function (e) {
+        e.preventDefault();
+        var windowId = windowManager.openWindow();
+        $('#open-window-list').append('<li class="window-item" data-window="' + windowId + '">Close Window ' + windowId + '</li>');
+    });
+
+    $('#open-window-list').on('click', '.window-item', function (e) {
+        e.preventDefault();
+        var windowId = $(this).attr('data-window');
+        windowManager.closeWindow(windowId);
+        $('li[data-window='+windowId+']').remove();
+    });
+
+    $('#close-all-windows').on('click', function (e) {
+        e.preventDefault();
+        windowManager.closeAllWindows();
+        $('li').remove();
+    });
+
+    windowManager.onWindowClosed(function(windowId){
+        $('li[data-window='+windowId+']').remove();
+    });
+
+</script>
+</body>
+</html>
