@@ -123,14 +123,6 @@ namespace CefSharp.Example
                     break;
                 }
             }
-            
-            //settings.LogSeverity = LogSeverity.Verbose;
-
-            if (DebuggingSubProcess)
-            {
-                var architecture = Environment.Is64BitProcess ? "x64" : "x86";
-                settings.BrowserSubprocessPath = "..\\..\\..\\..\\CefSharp.BrowserSubprocess\\bin\\" + architecture + "\\Debug\\CefSharp.BrowserSubprocess.exe";
-            }
 
             settings.FocusedNodeChangedEnabled = true;
 

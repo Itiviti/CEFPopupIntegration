@@ -1,3 +1,6 @@
 packages*
 .vs/CEFPanel/v15/.suo
 .vs
+client/bin/
+client/obj/
+*.user
