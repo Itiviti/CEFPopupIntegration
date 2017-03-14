@@ -4,20 +4,17 @@
 
 using System;
 using System.Windows.Forms;
-using CefSharp.Example;
-using CefSharp.WinForms.Example.Handlers;
 using CefSharp.WinForms.Internals;
+using CEFPanel.api;
 
 namespace CefSharp.WinForms.Example.Minimal
 {
     public partial class IFForm : Form
     {
-        private readonly ILifeSpanHandler handler;
         private ChromiumWebBrowser browser;
 
-        public IFForm(ILifeSpanHandler handler)
+        public IFForm()
         {
-            this.handler = handler;
             InitializeComponent();
 
             var bitness = Environment.Is64BitProcess ? "x64" : "x86";
@@ -36,6 +33,11 @@ namespace CefSharp.WinForms.Example.Minimal
             set { browser = value; }
         }
 
+        public ChartsService Handler
+        {
+            set { browser.LifeSpanHandler = value; }
+        }
+
         private void OnLoad(object sender, EventArgs e)
         {
             CreateBrowser();
@@ -47,10 +49,7 @@ namespace CefSharp.WinForms.Example.Minimal
             {
                 Dock = DockStyle.Fill,
             };
-            pnlWebBrowser.Controls.Add(browser);
-
-            browser.LifeSpanHandler = handler;
-            browser.RegisterJsObject("bound", new BoundObject());
+            pnlWebBrowser.Controls.Add(browser);  
         }
     }
 }

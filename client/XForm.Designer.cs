@@ -28,13 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XForm));
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.pnlButtons = new System.Windows.Forms.Panel();
-            this.txtChart2 = new System.Windows.Forms.TextBox();
-            this.txtChart1 = new System.Windows.Forms.TextBox();
+            this.lblBrokerCaption = new System.Windows.Forms.Label();
+            this.lblBroker = new System.Windows.Forms.Label();
+            this.btnSubscribeOrder = new System.Windows.Forms.Button();
             this.btnChart2 = new System.Windows.Forms.Button();
             this.btnChart1 = new System.Windows.Forms.Button();
+            this.lblOrderCaption = new System.Windows.Forms.Label();
+            this.lblOrder = new System.Windows.Forms.Label();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.SuspendLayout();
             this.pnlButtons.SuspendLayout();
@@ -51,8 +56,11 @@
             // 
             // pnlButtons
             // 
-            this.pnlButtons.Controls.Add(this.txtChart2);
-            this.pnlButtons.Controls.Add(this.txtChart1);
+            this.pnlButtons.Controls.Add(this.lblOrder);
+            this.pnlButtons.Controls.Add(this.lblOrderCaption);
+            this.pnlButtons.Controls.Add(this.lblBrokerCaption);
+            this.pnlButtons.Controls.Add(this.lblBroker);
+            this.pnlButtons.Controls.Add(this.btnSubscribeOrder);
             this.pnlButtons.Controls.Add(this.btnChart2);
             this.pnlButtons.Controls.Add(this.btnChart1);
             this.pnlButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -61,29 +69,34 @@
             this.pnlButtons.Size = new System.Drawing.Size(730, 256);
             this.pnlButtons.TabIndex = 0;
             // 
-            // txtChart2
+            // lblBrokerCaption
             // 
-            this.txtChart2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtChart2.Location = new System.Drawing.Point(371, 41);
-            this.txtChart2.Multiline = true;
-            this.txtChart2.Name = "txtChart2";
-            this.txtChart2.Size = new System.Drawing.Size(356, 203);
-            this.txtChart2.TabIndex = 3;
-            this.txtChart2.Text = "var windowId = windowManager.openWindow(\'container2\');         $(\'#open-window-li" +
-    "st\').append(\'<li class=\"window-item\" data-window=\"\' + windowId + \'\">Close Window" +
-    " \' + windowId + \'</li>\');";
+            this.lblBrokerCaption.AutoSize = true;
+            this.lblBrokerCaption.Location = new System.Drawing.Point(12, 122);
+            this.lblBrokerCaption.Name = "lblBrokerCaption";
+            this.lblBrokerCaption.Size = new System.Drawing.Size(44, 13);
+            this.lblBrokerCaption.TabIndex = 4;
+            this.lblBrokerCaption.Text = "Broker :";
             // 
-            // txtChart1
+            // lblBroker
             // 
-            this.txtChart1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtChart1.Location = new System.Drawing.Point(3, 41);
-            this.txtChart1.Multiline = true;
-            this.txtChart1.Name = "txtChart1";
-            this.txtChart1.Size = new System.Drawing.Size(356, 203);
-            this.txtChart1.TabIndex = 2;
-            this.txtChart1.Text = "var windowId = windowManager.openWindow(\'container1\');\r\n        $(\'#open-window-l" +
-    "ist\').append(\'<li class=\"window-item\" data-window=\"\' + windowId + \'\">Close Windo" +
-    "w \' + windowId + \'</li>\');";
+            this.lblBroker.AutoSize = true;
+            this.lblBroker.Location = new System.Drawing.Point(62, 122);
+            this.lblBroker.Name = "lblBroker";
+            this.lblBroker.Size = new System.Drawing.Size(46, 13);
+            this.lblBroker.TabIndex = 3;
+            this.lblBroker.Text = "brokerId";
+            // 
+            // btnSubscribeOrder
+            // 
+            this.btnSubscribeOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSubscribeOrder.Location = new System.Drawing.Point(3, 40);
+            this.btnSubscribeOrder.Name = "btnSubscribeOrder";
+            this.btnSubscribeOrder.Size = new System.Drawing.Size(724, 31);
+            this.btnSubscribeOrder.TabIndex = 2;
+            this.btnSubscribeOrder.Text = "SubscribeToOrder";
+            this.btnSubscribeOrder.UseVisualStyleBackColor = true;
+            this.btnSubscribeOrder.Click += new System.EventHandler(this.btnSubscribeOrder_Click);
             // 
             // btnChart2
             // 
@@ -106,6 +119,32 @@
             this.btnChart1.Text = "Open Chart 1";
             this.btnChart1.UseVisualStyleBackColor = true;
             this.btnChart1.Click += new System.EventHandler(this.btnChart1_Click);
+            // 
+            // lblOrderCaption
+            // 
+            this.lblOrderCaption.AutoSize = true;
+            this.lblOrderCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOrderCaption.Location = new System.Drawing.Point(12, 95);
+            this.lblOrderCaption.Name = "lblOrderCaption";
+            this.lblOrderCaption.Size = new System.Drawing.Size(51, 18);
+            this.lblOrderCaption.TabIndex = 5;
+            this.lblOrderCaption.Text = "Order";
+            // 
+            // lblOrder
+            // 
+            this.lblOrder.AutoSize = true;
+            this.lblOrder.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOrder.Location = new System.Drawing.Point(62, 95);
+            this.lblOrder.Name = "lblOrder";
+            this.lblOrder.Size = new System.Drawing.Size(51, 18);
+            this.lblOrder.TabIndex = 6;
+            this.lblOrder.Text = "Order";
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 500;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // XForm
             // 
@@ -130,7 +169,11 @@
         private System.Windows.Forms.Panel pnlButtons;
         private System.Windows.Forms.Button btnChart2;
         private System.Windows.Forms.Button btnChart1;
-        private System.Windows.Forms.TextBox txtChart2;
-        private System.Windows.Forms.TextBox txtChart1;
+        private System.Windows.Forms.Button btnSubscribeOrder;
+        private System.Windows.Forms.Label lblBroker;
+        private System.Windows.Forms.Label lblBrokerCaption;
+        private System.Windows.Forms.Label lblOrder;
+        private System.Windows.Forms.Label lblOrderCaption;
+        private System.Windows.Forms.Timer timer;
     }
 }

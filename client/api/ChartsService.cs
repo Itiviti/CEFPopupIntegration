@@ -3,23 +3,45 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using CefSharp;
+using CefSharp.WinForms;
 
-namespace CefSharp.WinForms.Example.Handlers
+namespace CEFPanel.api
 {
-    public class LifeSpanHandler : ILifeSpanHandler
+    public class ChartsService : ILifeSpanHandler
     {
-        private readonly Control container1;
-        private readonly Control container2;
+        private readonly IFrame _frame;
+        private readonly Dictionary<string, Control> containers = new Dictionary<string, Control>();
 
-        public LifeSpanHandler(Control container1, Control container2 )
+        public ChartsService(IFrame frame)
         {
-            this.container1 = container1;
-            this.container2 = container2;
+            _frame = frame;
         }
 
+        public void RegisterContainer(string name, Control container)
+        {
+            containers.Add(name, container);
+        }
+
+        public void ShowChart(string containerName, params KeyValuePair<string, string>[] properties)
+        {
+            //TODO JS API to close & Open
+            _frame.ExecuteJavaScriptAsync("var windowId = windowManager.openWindow('" + containerName +  "'); $('#open-window-list').append('<li class=\"window-item\" data-window=\"' + windowId + '\">Close Window ' + windowId + '</li>');");
+        }
+
+        # region ILifeSpanHandler
         bool ILifeSpanHandler.OnBeforePopup(IWebBrowser browserControl, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
         {
+            var first = containers.Keys.FirstOrDefault(_ => targetFrameName.Contains(_));
+            if (first == null)
+            {
+                newBrowser = null;
+                return true;
+            }
+            
             //EXPERIMENTAL OPTION #1: Demonstrates using a new instance of ChromiumWebBrowser to host the popup.
             var chromiumWebBrowser = (ChromiumWebBrowser)browserControl;
 
@@ -49,22 +71,10 @@ namespace CefSharp.WinForms.Example.Handlers
                     Text = targetFrameName
                 };
 
-                if (targetFrameName.Contains("container2"))
-                {
-                    container2.Controls.Clear();
-                    container2.Controls.Add(lbl);
-                    lbl.Dock = DockStyle.Bottom;
-                    container2.Controls.Add(chromiumBrowser);
-                    chromiumBrowser.Dock = DockStyle.Fill;
-                }
-                else
-                {
-                    container1.Controls.Clear();
-                    container1.Controls.Add(lbl);
-                    lbl.Dock = DockStyle.Bottom;
-                    container1.Controls.Add(chromiumBrowser);
-                    chromiumBrowser.Dock = DockStyle.Fill;
-                }
+                var container = containers[first];
+                container.Controls.Clear();
+                container.Controls.Add(chromiumBrowser);
+                chromiumBrowser.Dock = DockStyle.Fill;
 
                 var rect = chromiumBrowser.ClientRectangle;
 
@@ -76,47 +86,6 @@ namespace CefSharp.WinForms.Example.Handlers
             newBrowser = chromiumBrowser;
 
             return false;
-
-            //EXPERIMENTAL OPTION #2: Use IWindowInfo.SetAsChild to specify the parent handle
-            //NOTE: Window resize not yet handled - it should be possible to get the
-            // IBrowserHost from the newly created IBrowser instance that represents the popup
-            // Then subscribe to window resize notifications and call NotifyMoveOrResizeStarted
-            //var chromiumWebBrowser = (ChromiumWebBrowser)browserControl;
-
-            //var windowX = windowInfo.X;
-            //var windowY = windowInfo.Y;
-            //var windowWidth = (windowInfo.Width == int.MinValue) ? 600 : windowInfo.Width;
-            //var windowHeight = (windowInfo.Height == int.MinValue) ? 800 : windowInfo.Height;
-
-            //chromiumWebBrowser.Invoke(new Action(() =>
-            //{
-            //    var owner = chromiumWebBrowser.FindForm();
-
-            //    var popup = new Form
-            //    {
-            //        Left = windowX,
-            //        Top = windowY,
-            //        Width = windowWidth,
-            //        Height = windowHeight,
-            //        Text = targetFrameName
-            //    };
-
-            //    popup.CreateControl();
-
-            //    owner.AddOwnedForm(popup);
-
-            //    var control = new Control();
-            //    control.Dock = DockStyle.Fill;
-            //    control.CreateControl();
-
-            //    popup.Controls.Add(control);
-
-            //    popup.Show();
-
-            //    var rect = control.ClientRectangle;
-
-            //    windowInfo.SetAsChild(control.Handle, rect.Left, rect.Top, rect.Right, rect.Bottom);
-            //}));
         }
 
         void ILifeSpanHandler.OnAfterCreated(IWebBrowser browserControl, IBrowser browser)
@@ -143,5 +112,6 @@ namespace CefSharp.WinForms.Example.Handlers
         {
 
         }
+#endregion
     }
 }

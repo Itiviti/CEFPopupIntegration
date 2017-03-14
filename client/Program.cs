@@ -6,10 +6,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CefSharp.Example;
-using CefSharp.Example.Handlers;
-using CefSharp.WinForms.Example.Handlers;
 using CefSharp.WinForms.Example.Minimal;
+using CEFPanel.utils;
+using CEFPanel.utils.handlers;
 
 namespace CefSharp.WinForms.Example
 {
@@ -64,7 +63,7 @@ namespace CefSharp.WinForms.Example
                 
                 IBrowserProcessHandler browserProcessHandler;
                 browserProcessHandler = new BrowserProcessHandler();
-                CefExample.Init(osr: false, multiThreadedMessageLoop: multiThreadedMessageLoop, browserProcessHandler: browserProcessHandler);
+                CefInitialization.Init(osr: false, multiThreadedMessageLoop: multiThreadedMessageLoop, browserProcessHandler: browserProcessHandler);
 
                 Application.Run(browser);
             }

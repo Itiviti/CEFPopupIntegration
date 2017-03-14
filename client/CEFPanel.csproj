@@ -54,6 +54,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -65,12 +66,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\BoundObject.cs" />
-    <Compile Include="Utils\CallbackResponseStruct.cs" />
-    <Compile Include="Utils\CefExample.cs" />
-    <Compile Include="Utils\ExceptionTestBoundObject.cs" />
-    <Compile Include="Utils\Handlers\BrowserProcessHandler.cs" />
-    <Compile Include="LifeSpanHandler.cs" />
+    <Compile Include="api\JsOrdersDataService.cs" />
+    <Compile Include="api\Order.cs" />
+    <Compile Include="utils\CefInitialization.cs" />
+    <Compile Include="utils\handlers\BrowserProcessHandler.cs" />
+    <Compile Include="api\ChartsService.cs" />
     <Compile Include="IFForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,12 +91,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Proxy\InternetOpenType.cs" />
-    <Compile Include="Utils\Proxy\InternetProxyInfo.cs" />
-    <Compile Include="Utils\Proxy\ProxyConfig.cs" />
-    <Compile Include="Utils\SimpleClass.cs" />
-    <Compile Include="Utils\SimpleSubClass.cs" />
-    <Compile Include="Utils\SubBoundObject.cs" />
+    <Compile Include="utils\proxy\InternetOpenType.cs" />
+    <Compile Include="utils\proxy\InternetProxyInfo.cs" />
+    <Compile Include="utils\proxy\ProxyConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="IFForm.resx">
@@ -116,19 +113,19 @@
     <None Include="app.manifest" />
     <None Include="crash_reporter.cfg" />
     <None Include="packages.config" />
-    <None Include="Resources\nav_left_green.png" />
+    <None Include="resources\nav_left_green.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\nav_plain_green.png" />
+    <None Include="resources\nav_plain_green.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\nav_plain_red.png" />
+    <None Include="resources\nav_plain_red.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\nav_right_green.png" />
+    <None Include="resources\nav_right_green.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\chromium-256.png" />
+    <None Include="resources\chromium-256.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\CefSharp.props" />
@@ -149,6 +146,7 @@
   <Import Project="packages\CefSharp.Common.55.0.0\build\CefSharp.Common.targets" Condition="Exists('packages\CefSharp.Common.55.0.0\build\CefSharp.Common.targets')" />
   <Import Project="packages\CefSharp.WinForms.55.0.0\build\CefSharp.WinForms.targets" Condition="Exists('packages\CefSharp.WinForms.55.0.0\build\CefSharp.WinForms.targets')" />
   <Target Name="AfterBuild">
-    <Copy SourceFiles="app.config" DestinationFiles="$(OutputPath)\CefSharp.BrowserSubprocess.exe.config"></Copy>
+    <Copy SourceFiles="app.config" DestinationFiles="$(OutputPath)\CefSharp.BrowserSubprocess.exe.config">
+    </Copy>
   </Target>
 </Project>

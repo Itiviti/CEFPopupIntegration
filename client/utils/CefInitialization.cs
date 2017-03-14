@@ -4,16 +4,12 @@
 
 using System;
 using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
-using CefSharp.Example.Handlers;
-using CefSharp.Example.Proxy;
-using CefSharp.Internals;
-using CefSharp.SchemeHandler;
+using CefSharp;
+using CEFPanel.utils.proxy;
 
-namespace CefSharp.Example
+namespace CEFPanel.utils
 {
-    public static class CefExample
+    public static class CefInitialization
     {
         public const string DefaultUrl = "custom://cefsharp/home.html";
         public const string BindingTestUrl = "custom://cefsharp/BindingTest.html";
@@ -129,66 +125,6 @@ namespace CefSharp.Example
             if (!Cef.Initialize(settings, performDependencyCheck: !DebuggingSubProcess, browserProcessHandler: browserProcessHandler))
             {
                 throw new Exception("Unable to Initialize Cef");
-            }
-        }
-
-        public static async void RegisterTestResources(IWebBrowser browser)
-        {
-            var handler = browser.ResourceHandlerFactory as DefaultResourceHandlerFactory;
-            if (handler != null)
-            {
-                const string renderProcessCrashedBody = "<html><body><h1>Render Process Crashed</h1><p>Your seeing this message as the render process has crashed</p></body></html>";
-                handler.RegisterHandler(RenderProcessCrashedUrl, ResourceHandler.FromString(renderProcessCrashedBody));
-
-                const string responseBody = "<html><body><h1>Success</h1><p>This document is loaded from a System.IO.Stream</p></body></html>";
-                var response = ResourceHandler.FromString(responseBody);
-                response.Headers.Add("HeaderTest1", "HeaderTest1Value");
-                handler.RegisterHandler(TestResourceUrl, response);
-
-                const string unicodeResponseBody = "<html><body>整体满意度</body></html>";
-                handler.RegisterHandler(TestUnicodeResourceUrl, ResourceHandler.FromString(unicodeResponseBody));
-
-                if (string.IsNullOrEmpty(PluginInformation))
-                {
-                    var pluginBody = new StringBuilder();
-                    pluginBody.Append("<html><body><h1>Plugins</h1><table>");
-                    pluginBody.Append("<tr>");
-                    pluginBody.Append("<th>Name</th>");
-                    pluginBody.Append("<th>Description</th>");
-                    pluginBody.Append("<th>Version</th>");
-                    pluginBody.Append("<th>Path</th>");
-                    pluginBody.Append("</tr>");
-                
-                    var plugins = await Cef.GetPlugins();
-
-                    if(plugins.Count == 0)
-                    {
-                        pluginBody.Append("<tr>");
-                        pluginBody.Append("<td colspan='4'>Cef.GetPlugins returned an empty list - likely no plugins were loaded on your system</td>");
-                        pluginBody.Append("</tr>");
-                        pluginBody.Append("<tr>");
-                        pluginBody.Append("<td colspan='4'>You may find that NPAPI/PPAPI need to be enabled</td>");
-                        pluginBody.Append("</tr>");
-                    }
-                    else
-                    {
-                        foreach (var plugin in plugins)
-                        {
-                            pluginBody.Append("<tr>");
-                            pluginBody.Append("<td>" + plugin.Name + "</td>");
-                            pluginBody.Append("<td>" + plugin.Description + "</td>");
-                            pluginBody.Append("<td>" + plugin.Version + "</td>");
-                            pluginBody.Append("<td>" + plugin.Path + "</td>");
-                            pluginBody.Append("</tr>");
-                        }
-                    }
-
-                    pluginBody.Append("</table></body></html>");
-
-                    PluginInformation = pluginBody.ToString();
-                }
-
-                handler.RegisterHandler(PluginsTestUrl, ResourceHandler.FromString(PluginInformation));
             }
         }
     }

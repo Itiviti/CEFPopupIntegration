@@ -6,7 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
-namespace CefSharp.Example.Proxy
+namespace CEFPanel.utils.proxy
 {
     public class ProxyConfig
     {
