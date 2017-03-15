@@ -11,6 +11,14 @@
   crossorigin="anonymous"></script>
 <script src="windowManager.js"></script>
 <script type="text/javascript">
+
+    var worker = new Worker("orderDataServerWorker.js");
+    var transferable =
+    {
+        orderDataService: jsOrdersDataService
+    };
+    worker.postMessage(transferable, [transferable.orderDataService]);
+
     if (window.opener) {
         $('body').append('This is a secondary window!');
     }

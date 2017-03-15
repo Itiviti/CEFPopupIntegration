@@ -18,7 +18,7 @@ function createWindowManager () {
     var _origin                = window.location.origin;
 
     init();
-
+    
     function openWindow (name) {
         if (!_isPrimary) { return null; }
         var windowId            = 'child_' + name + '_' + (++_nextId);

@@ -20,7 +20,7 @@ namespace CEFPanel.api
         public JsOrdersDataService(IWebBrowser webBrowser)
         {
             this.webBrowser = webBrowser;
-            webBrowser.RegisterAsyncJsObject("jsOrdersDataService", this);
+            webBrowser.RegisterJsObject("jsOrdersDataService", this);
         }
 
         #region CallFromJS
@@ -49,11 +49,7 @@ namespace CEFPanel.api
         public Task<IObservable<Order>> SubscribeAsync()
         {
             // Call to Javasript API : How is this handle behind ?
-            var task = webBrowser.GetMainFrame().EvaluateScriptAsync("(function() { " +
-                                                    "setInterval(function() {" +
-                                                        "var order = {type:'Order', id:1, broker:'Broker' + new Date().getTime()};" +
-                                                        "jsOrdersDataService.publishUpdate(order);" +
-                                                                     "}, 2000);})();", null);
+            var task = webBrowser.GetMainFrame().EvaluateScriptAsync("(function(){})();", null);
             return task.ContinueWith(t =>
             {
                 if (t.IsFaulted)
